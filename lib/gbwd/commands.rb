@@ -5,11 +5,12 @@ module Gbwd
 		def initialize
 			@hosts_file_path = '/etc/hosts'
 			@ip_address = '69.55.54.215'
-		end
+		end	
 
 		def add(options)
 			modify(options) do |domains, domain|
 				domains << [ip_address, domain].join(' ')
+				"You added #{domain}."
 			end
 		end
 
@@ -18,25 +19,37 @@ module Gbwd
 				domains.select! do |domain_to_check|
 					(Regexp.new(domain) =~ domain_to_check).nil?
 				end
+				"You removed #{domain}."
 			end
 		end
+
+		def list(options = {})
+			install unless installed?
+			domains = get_domains_from_file
+			if domains.size == 0
+				[
+					"You do not have any blocked domains. You can add one by using the add command.",
+					"  ex. ~ sudo gbwd add -d www.youtube.com"	
+				].join("\n")
+			else
+				domains = domains.map do |line|
+					line.split(' ')[1]
+				end
+				"The following domains are currenlty being blocked:\n" + domains.join("\n")
+			end
+		end
+
+	private
 
 		def modify(options)
 			raise ArgumentError.new('You must pass a block to the modify method.') unless block_given?
 			install unless installed?
 			domain = options.fetch(:domain, nil)
 			domains = get_domains_from_file
-			yield(domains, domain)
+			response = yield(domains, domain)
 			write_to_hosts_file(domains)
+			response
 		end
-
-		def list(options = {})
-			install unless installed?
-			get_domains_from_file.join("\n")
-		end
-
-
-	private
 
 		def hosts_file_path
 			@hosts_file_path
