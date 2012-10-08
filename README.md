@@ -40,6 +40,8 @@ Start blocking all domains again:
 
 	sudo gbwd enable
 
+## Todos
+1. Make a copy of /etc/hosts file before modifying it
 
 
 ## Contributing
