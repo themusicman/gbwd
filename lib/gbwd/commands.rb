@@ -26,7 +26,11 @@ module Gbwd
 		def enable(options = {})
 			modify(options) do |domains, domain|
 				domains.map! do |line|
-					line[1..-1] if line.start_with?('#')
+					if line.start_with?('#')
+						line[1..-1] 
+					else
+						line
+					end
 				end
 				"All domains have been enabled."
 			end
@@ -35,7 +39,11 @@ module Gbwd
 		def disable(options = {})
 			modify(options) do |domains, domain|
 				domains.map! do |line|
-					"#" + line
+					unless line.start_with?('#')
+						"#" + line 
+					else
+						line 
+					end
 				end
 				"All domains have been disabled."
 			end
