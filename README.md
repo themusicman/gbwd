@@ -1,4 +1,4 @@
-# Gbwd
+# Gbwd (Alpha)
 
 A little Gem to help eliminate website distractions.  It basically routes any requests for the domains that are being blocked to [http://getbacktoworkdummy.com](http://getbacktoworkdummy.com "http://getbacktoworkdummy.com")
 
@@ -41,7 +41,8 @@ Start blocking all domains again:
 	sudo gbwd enable
 
 ## Todos
-1. Make a copy of /etc/hosts file before modifying it
+1. Fix bug with adding domains when blocking have been disabled 
+2. Make a copy of /etc/hosts file before modifying it
 
 
 ## Contributing
