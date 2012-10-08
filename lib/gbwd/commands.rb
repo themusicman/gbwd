@@ -7,19 +7,37 @@ module Gbwd
 			@ip_address = '69.55.54.215'
 		end	
 
-		def add(options)
+		def add(options = {})
 			modify(options) do |domains, domain|
 				domains << [ip_address, domain].join(' ')
 				"You added #{domain}."
 			end
 		end
 
-		def remove(options)
+		def remove(options = {})
 			modify(options) do |domains, domain|
 				domains.select! do |domain_to_check|
 					(Regexp.new(domain) =~ domain_to_check).nil?
 				end
 				"You removed #{domain}."
+			end
+		end
+
+		def enable(options = {})
+			modify(options) do |domains, domain|
+				domains.map! do |line|
+					line[1..-1] if line.start_with?('#')
+				end
+				"All domains have been enabled."
+			end
+		end
+
+		def disable(options = {})
+			modify(options) do |domains, domain|
+				domains.map! do |line|
+					"#" + line
+				end
+				"All domains have been disabled."
 			end
 		end
 
@@ -61,7 +79,7 @@ module Gbwd
 
 		def get_domains_from_file
 			file = File.open(hosts_file_path, 'r').read
-			matches = file.match(/# GBWD START(.*)# GBWD END/m)
+			matches = file.match(/#-GBWD START(.*)#-GBWD END/m)
 			domains = []
 			unless matches.nil?
 				matches.captures[0].split("\n").each do |domain|
@@ -74,25 +92,25 @@ module Gbwd
 		end
 
 		def wrap_with_header_and_footer(lines)
-			lines.insert(0, '# GBWD START')
-			lines << '# GBWD END'
+			lines.insert(0, '#-GBWD START')
+			lines << '#-GBWD END'
 		end
 
 		def write_to_hosts_file(lines)
 			updated_content = wrap_with_header_and_footer(lines).join("\n")
 			file = File.open(hosts_file_path, 'r').read
-			updated_file = file.gsub(/# GBWD START.*# GBWD END/m, updated_content)
+			updated_file = file.gsub(/#-GBWD START.*#-GBWD END/m, updated_content)
 			File.open(hosts_file_path, 'w').write(updated_file)
 		end
 
 		def installed?
 			file = File.open(hosts_file_path, 'r').read 
-			(file.match(/# GBWD START/)) ? true : false
+			(file.match(/#-GBWD START/)) ? true : false
 		end
 
 		def install
 			File.open(hosts_file_path, 'a+') do |file|
-				file.puts("# GBWD START\n# GBWD END")
+				file.puts("#-GBWD START\n#-GBWD END")
 			end
 		end
 

@@ -43,7 +43,44 @@ describe Gbwd::Commands, fakefs: true do
 		commands = Gbwd::Commands.new
 		commands.add({domain: 'www.youtube.com'})
 		commands.add({domain: 'www.facebook.com'})
-		commands.list.should eq("69.55.54.215 www.youtube.com\n69.55.54.215 www.facebook.com")
+		commands.list.should eq("The following domains are currenlty being blocked:\nwww.youtube.com\nwww.facebook.com")
+	end
+
+	it "#disable should comment out all lines" do
+		commands = Gbwd::Commands.new
+		commands.add({domain: 'www.youtube.com'})
+		commands.add({domain: 'www.facebook.com'})
+		commands.disable({})
+		file = File.open("/etc/hosts", 'r').read
+		matches = file.match(/#-GBWD START(.*)#-GBWD END/m)
+		unless matches.nil?
+			matches.captures[0].split("\n").each do |domain|
+				unless domain.empty?
+					domain.start_with?('#').should eq(true)
+				end
+			end
+		else
+			raise 'No domains found'
+		end
+	end
+
+	it "#enable should uncomment all lines" do
+		commands = Gbwd::Commands.new
+		commands.add({domain: 'www.youtube.com'})
+		commands.add({domain: 'www.facebook.com'})
+		commands.disable({})
+		commands.enable({})
+		file = File.open("/etc/hosts", 'r').read
+		matches = file.match(/#-GBWD START(.*)#-GBWD END/m)
+		unless matches.nil?
+			matches.captures[0].split("\n").each do |domain|
+				unless domain.empty?
+					domain.start_with?('#').should_not eq(true)
+				end
+			end
+		else
+			raise 'No domains found'
+		end
 	end
 	
 end

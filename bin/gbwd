@@ -23,6 +23,16 @@ command :remove do |opts|
     end
 end
 
+command :disable do |opts|
+	opts.banner = "Usage: disable"
+	opts.description = "Disables all domains being blocked."
+end
+
+command :enable do |opts|
+	opts.banner = "Usage: enable"
+	opts.description = "Enables all domains being blocked."
+end
+
 command :list do |opts|
 	opts.banner = "Usage: list"
 	opts.description = "Lists all domain on the list"
