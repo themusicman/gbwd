@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby -w
+
+require 'subcommand'
+require 'gbwd'
+
+include Subcommands
+
+options = {}
+
+command :add do |opts|
+	opts.banner = "Usage: add -d www.youtube.com"
+	opts.description = "Add a domain to the list"
+	opts.on('-d', '-domain DOMAIN', 'Domain name (without the http://)') do |domain|
+      options[:domain] = domain
+    end
+end
+
+command :remove do |opts|
+	opts.banner = "Usage: remove -d www.youtube.com"
+	opts.description = "Removes a domain to the list"
+	opts.on('-d', '-domain DOMAIN', 'Domain name (without the http://)') do |domain|
+      options[:domain] = domain
+    end
+end
+
+command :list do |opts|
+	opts.banner = "Usage: list"
+	opts.description = "Lists all domain on the list"
+end
+
+puts Gbwd.start(opt_parse(), options)
