@@ -1,6 +1,6 @@
 # Gbwd
 
-TODO: Write a gem description
+A little Gem to help eliminate website distractions.  It basically routes any requests for the domains that are being blocked to [http://getbacktoworkdummy.com](http://getbacktoworkdummy.com "http://getbacktoworkdummy.com")
 
 ## Installation
 
@@ -18,7 +18,29 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+*NOTE: Please back up your /etc/hosts file before running any commands.*
+
+Add a domain to be blocked:
+	
+	sudo gbwd add -d www.youtube.com
+	
+Remove a domain from being blocked:
+
+	sudo gbwd remove -d www.youtube.com
+	
+List all domains being blocked:
+
+	sudo gbwd list
+	
+Stop all domains from being blocked:
+
+	sudo gbwd disable
+	
+Start blocking all domains again:
+
+	sudo gbwd enable
+
+
 
 ## Contributing
 
