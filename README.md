@@ -4,16 +4,6 @@ A little Gem to help eliminate website distractions.  It basically routes any re
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'gbwd'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
     $ gem install gbwd
 
 ## Usage
