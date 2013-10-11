@@ -1,4 +1,6 @@
-# Gbwd (Alpha)
+# Gbwd (Defunct) 
+
+##THE WEBSITE ASSOCIATED WITH THIS GEM HAS BEEN TAKEN DOWN
 
 A little Gem to help eliminate website distractions.  It basically routes any requests for the domains that are being blocked to [http://getbacktoworkdummy.com](http://getbacktoworkdummy.com "http://getbacktoworkdummy.com")
 
